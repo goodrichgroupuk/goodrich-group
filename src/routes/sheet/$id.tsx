@@ -15,7 +15,7 @@ import {
   type ThreadPage,
 } from "@/lib/exhibits";
 import { addThread, getExhibit } from "@/lib/exhibits.functions";
-import { prepareSheet } from "@/lib/prepare-sheet";
+import { prepareSheet, SHEET_ACCEPT } from "@/lib/prepare-sheet";
 import { NameCover } from "@/components/name-cover";
 import { SAMPLES } from "@/lib/samples";
 
@@ -202,7 +202,7 @@ function AddPage({ exhibitId }: { exhibitId: string }) {
         <label className="flex min-h-28 cursor-pointer flex-col items-center justify-center gap-2 rounded-sm border border-dashed border-border bg-background px-4 py-5 text-center">
           <input
             type="file"
-            accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp"
+            accept={SHEET_ACCEPT}
             className="sr-only"
             onChange={(event) => {
               const next = event.target.files?.[0];
@@ -218,7 +218,7 @@ function AddPage({ exhibitId }: { exhibitId: string }) {
             />
           ) : (
             <span className="text-sm text-muted-foreground">
-              {preparing ? "Preparing the image…" : "Choose a screenshot. PNG and WebP are converted."}
+              {preparing ? "Preparing the file…" : "Choose a JPEG, a HEIC, or a PDF."}
             </span>
           )}
         </label>

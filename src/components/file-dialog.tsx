@@ -16,7 +16,7 @@ import {
   type ThreadKind,
 } from "@/lib/exhibits";
 import { fileExhibit } from "@/lib/exhibits.functions";
-import { prepareSheet } from "@/lib/prepare-sheet";
+import { prepareSheet, SHEET_ACCEPT } from "@/lib/prepare-sheet";
 import { NameCover } from "@/components/name-cover";
 
 export function FileDialog({
@@ -33,6 +33,7 @@ export function FileDialog({
   const [result, setResult] = useState<ResultId>("debt");
   const [consent, setConsent] = useState(false);
   const [imageData, setImageData] = useState("");
+  const [sheetEpoch, setSheetEpoch] = useState(0);
   const [pages, setPages] = useState<{ id: string; kind: ThreadKind; imageData: string }[]>([]);
   const [addingPage, setAddingPage] = useState(false);
   const [dragOver, setDragOver] = useState(false);
@@ -64,6 +65,7 @@ export function FileDialog({
     setPreparing(true);
     try {
       setImageData(await prepareSheet(fileInput));
+      setSheetEpoch((current) => current + 1);
     } catch (caught) {
       setImageData("");
       setError(errorText(caught, "Could not prepare that image."));
@@ -163,7 +165,7 @@ export function FileDialog({
       ) : (
         <DialogContent
           title="File a sheet"
-          description="A JPEG of the order you won. Add the conversation if you have it. Nothing is public until it is approved."
+          description="A JPEG, a HEIC, or a PDF of the order you won. Add the conversation if you have it. Nothing is public until it is approved."
         >
           <form onSubmit={(event) => void onSubmit(event)} className="grid gap-5">
             <div
@@ -187,7 +189,7 @@ export function FileDialog({
               <label className="flex min-h-44 cursor-pointer flex-col items-center justify-center gap-2 px-4 py-6 text-center">
                 <input
                   type="file"
-                  accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp"
+                  accept={SHEET_ACCEPT}
                   className="sr-only"
                   onChange={(event) => {
                     const next = event.target.files?.[0];
@@ -204,17 +206,19 @@ export function FileDialog({
                 ) : (
                   <>
                     <Upload className="size-5" aria-hidden="true" />
-                    <span className="text-sm font-medium">Choose a JPEG of the sheet</span>
+                    <span className="text-sm font-medium">Choose a JPEG, a HEIC, or a PDF</span>
                     <span className="max-w-xs text-sm text-muted-foreground">
                       {preparing
-                        ? "Preparing the image…"
-                        : "Drop it here, or browse. PNG and WebP are converted."}
+                        ? "Preparing the file…"
+                        : "Drop it here, or browse. A PDF or a HEIC is turned into a picture you can redact."}
                     </span>
                   </>
                 )}
               </label>
             </div>
-            {imageData ? <NameCover image={imageData} onChange={setImageData} /> : null}
+            {imageData ? (
+              <NameCover key={sheetEpoch} image={imageData} onChange={setImageData} />
+            ) : null}
 
             <div>
               <FieldLabel htmlFor="file-title">Public label</FieldLabel>
@@ -228,7 +232,7 @@ export function FileDialog({
                 onChange={(event) => setTitle(event.target.value)}
               />
               <p className="mt-2 text-sm text-muted-foreground">
-                No names in the label. Cover your own name on the picture if you want to stay anonymous. The company on the order can stay visible.
+                No names in the label. Black out the claimant on the picture if you want to stay anonymous. The company on the order can stay visible.
               </p>
             </div>
 
@@ -326,7 +330,7 @@ export function FileDialog({
                   <input
                     id="conversation-file"
                     type="file"
-                    accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp"
+                    accept={SHEET_ACCEPT}
                     className="sr-only"
                     onChange={(event) => {
                       const next = event.target.files?.[0];
