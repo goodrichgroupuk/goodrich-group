@@ -106,12 +106,17 @@ function createNeonSql(): Promise<Sql> {
 }
 
 async function createPgliteSql(): Promise<Sql> {
-  // Embedded Postgres, imported on demand so it never loads on the Neon path.
-  // One in-memory instance per process, shared across HMR module instances, so
-  // data survives source edits (it resets on dev-server restart).
+  // File-backed in the preview so a filed sheet survives an edit or a restart.
+  // Production uses Neon when DATABASE_URL is set, and never this path.
+  // Vercel has no durable disk, so it stays in memory there.
+  const dataDir =
+    typeof process !== "undefined" && !process.env.VERCEL
+      ? "/workspace/data/pglite"
+      : undefined;
   globalRef.__pgliteInstance__ ??= (async () => {
     const { PGlite } = await import("@electric-sql/pglite");
     const pg = new PGlite({
+      ...(dataDir ? { dataDir } : {}),
       parsers: {
         [OID_INT8]: Number,
         [OID_DATE]: identity,

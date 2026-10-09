@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { ExhibitCard } from "@/components/exhibit-card";
 import { FileDialog } from "@/components/file-dialog";
+import { RedactDialog } from "@/components/redact-dialog";
 import { RemoveDialog } from "@/components/remove-dialog";
 import { Button } from "@/components/ui/button";
 import { AppErrorComponent } from "@/lib/error-component";
@@ -17,7 +18,7 @@ export const Route = createFileRoute("/")({
   pendingComponent: PendingHome,
   head: () => ({
     meta: [
-      { title: "Goodrich Group — Helping good people get rich." },
+      { title: "Goodrich Group — Good does not always mean rich." },
       {
         name: "description",
         content:
@@ -46,6 +47,7 @@ function Home() {
   const filed = Route.useLoaderData();
   const [filter, setFilter] = useState("all");
   const [fileOpen, setFileOpen] = useState(false);
+  const [redactOpen, setRedactOpen] = useState(false);
   const [removeOpen, setRemoveOpen] = useState(false);
 
   const visibleFiled = useMemo(
@@ -61,13 +63,18 @@ function Home() {
   return (
     <div id="top" className="min-h-screen">
       <header className="sticky top-0 z-30 border-b border-border bg-background">
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4">
+        <div className="mx-auto flex min-h-16 max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3">
           <a href="#top" className="display text-xl text-foreground">
             Goodrich Group
           </a>
-          <Button className="whitespace-nowrap" onClick={() => setFileOpen(true)}>
-            File a sheet
-          </Button>
+          <div className="flex flex-wrap items-center gap-2">
+            <Button variant="secondary" className="whitespace-nowrap" onClick={() => setRedactOpen(true)}>
+              Redact a file
+            </Button>
+            <Button className="whitespace-nowrap" onClick={() => setFileOpen(true)}>
+              File a sheet
+            </Button>
+          </div>
         </div>
       </header>
 
@@ -79,7 +86,7 @@ function Home() {
             </p>
             <h1 className="display mt-4 text-5xl text-foreground md:text-6xl">Goodrich Group</h1>
             <p className="tagline mt-4 text-2xl text-foreground md:text-3xl">
-              Helping good people get rich.
+              Good does not always mean rich.
             </p>
             <p className="mt-6 max-w-xl text-base text-muted-foreground">
               When someone stalls a payment, pays an invoice late, keeps a deposit, or leans on
@@ -89,6 +96,9 @@ function Home() {
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
               <Button onClick={() => setFileOpen(true)}>File a sheet</Button>
+              <Button variant="secondary" onClick={() => setRedactOpen(true)}>
+                Redact a file
+              </Button>
               <a
                 href="#wall"
                 className="inline-flex h-11 items-center text-sm font-medium text-foreground underline decoration-border underline-offset-4"
@@ -140,7 +150,7 @@ function Home() {
             <Step
               n="02"
               title="Photograph the sheet"
-              body="A clear JPEG of the page is enough. You can also add the emails or WhatsApp screenshots that led to court. Cover names, phone numbers, and addresses first."
+              body="A JPEG, a HEIC, or a PDF of the page is enough. Before it is filed, black out the claimant: your name, address, phone, and email. The company that would not pay can stay visible."
             />
             <Step
               n="03"
@@ -244,6 +254,7 @@ function Home() {
       </footer>
 
       <FileDialog open={fileOpen} onOpenChange={setFileOpen} />
+      <RedactDialog open={redactOpen} onOpenChange={setRedactOpen} />
       <RemoveDialog open={removeOpen} onOpenChange={setRemoveOpen} />
     </div>
   );
