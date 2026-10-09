@@ -33,23 +33,26 @@ async function burnCovers(dataUrl: string, rects: Rect[]) {
       Math.max(2, rect.h * canvas.height),
     );
   }
-  const blob = await new Promise<Blob | null>((resolve) => {
-    canvas.toBlob(resolve, "image/jpeg", 0.72);
-  });
-  if (!blob) throw new Error("Could not cover that name.");
-  const url = await new Promise<string>((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      if (typeof reader.result === "string") resolve(reader.result);
-      else reject(new Error("Could not cover that name."));
-    };
-    reader.onerror = () => reject(new Error("Could not cover that name."));
-    reader.readAsDataURL(blob);
-  });
-  if (url.length > 400_000) {
-    throw new Error("That picture is still too large after the cover. Try a closer crop.");
+  let quality = 0.72;
+  let url = "";
+  for (let attempt = 0; attempt < 4; attempt += 1) {
+    const blob = await new Promise<Blob | null>((resolve) => {
+      canvas.toBlob(resolve, "image/jpeg", quality);
+    });
+    if (!blob) throw new Error("Could not cover that name.");
+    url = await new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (typeof reader.result === "string") resolve(reader.result);
+        else reject(new Error("Could not cover that name."));
+      };
+      reader.onerror = () => reject(new Error("Could not cover that name."));
+      reader.readAsDataURL(blob);
+    });
+    if (url.length <= 400_000) return url;
+    quality -= 0.12;
   }
-  return url;
+  throw new Error("That picture is still too large after the cover. Try a closer crop.");
 }
 
 export function NameCover({
@@ -61,7 +64,7 @@ export function NameCover({
 }) {
   const frame = useRef<HTMLDivElement>(null);
   const origin = useRef<{ x: number; y: number } | null>(null);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const [rects, setRects] = useState<Rect[]>([]);
   const [draft, setDraft] = useState<Rect | null>(null);
   const [busy, setBusy] = useState(false);
@@ -137,7 +140,7 @@ export function NameCover({
     return (
       <div className="mt-3">
         <Button type="button" variant="secondary" onClick={() => setOpen(true)}>
-          Cover a name
+          Redact your details
         </Button>
       </div>
     );
@@ -148,7 +151,7 @@ export function NameCover({
   return (
     <div className="mt-3 grid gap-3">
       <p className="text-sm text-muted-foreground">
-        Drag across your name. The company on the order can stay visible. The cover is burned into the picture, and it cannot be uncovered later.
+        Drag a box over the claimant: your name, address, phone, or email. Leave the company that would not pay visible. The bar is burned into the JPEG, and it cannot be lifted later.
       </p>
       <div
         ref={frame}
@@ -184,7 +187,7 @@ export function NameCover({
       ) : null}
       <div className="flex flex-col gap-3 sm:flex-row">
         <Button type="button" disabled={busy || !rects.length} onClick={() => void apply()}>
-          {busy ? "Covering…" : "Burn in the covers"}
+          {busy ? "Redacting…" : "Burn in the redaction"}
         </Button>
         <Button
           type="button"
