@@ -293,7 +293,7 @@ document.getElementById("redact-file").onchange = (event) => {
   event.target.value = "";
   if (!file) return;
   redactEmpty.hidden = false;
-  redactEmpty.textContent = "Preparing the file\u2026";
+  redactEmpty.textContent = "Preparing the file…";
   redactError.hidden = true;
   prepareFile(file).then((dataUrl) => {
     redactPreview.src = dataUrl;
