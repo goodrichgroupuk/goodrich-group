@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Goodrich Group — Helping good people get rich.</title>
+<meta name="description" content="A public gallery of court orders and counter-judgments. File the JPEG of a sheet you won.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,400;0,500;0,600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
+<link rel="icon" href="favicon.svg">
+<style>
+:root { --bg:#f3f1ec; --fg:#1c1b18; --card:#faf9f6; --muted:#e7e2d8; --muted-fg:#5c574e; --border:#d9d3c7; }
+* { box-sizing:border-box; }
+html { -webkit-font-smoothing:antialiased; }
+body { margin:0; min-height:100vh; background:var(--bg); color:var(--fg); font-family:"Libre Franklin",ui-sans-serif,system-ui,sans-serif; line-height:1.5; }
+a { color:inherit; }
+.display { font-family:Newsreader,Georgia,serif; font-weight:500; letter-spacing:-0.03em; line-height:1.05; }
+.tagline { font-family:Newsreader,Georgia,serif; font-style:italic; font-weight:400; line-height:1.25; }
+header { position:sticky; top:0; z-index:30; border-bottom:1px solid var(--border); background:var(--bg); }
+.bar, .wrap { max-width:72rem; margin:0 auto; padding-left:1rem; padding-right:1rem; }
+.bar { height:4rem; display:flex; align-items:center; justify-content:space-between; }
+.brand { font-size:1.25rem; text-decoration:none; }
+button { height:2.75rem; border:0; border-radius:0.5rem; padding:0 1rem; background:var(--fg); color:#f6f4ef; font:500 0.875rem/1 "Libre Franklin",sans-serif; cursor:pointer; }
+.hero { display:grid; gap:2.5rem; align-items:end; padding:3rem 0; }
+.kicker { font-size:0.75rem; font-weight:500; letter-spacing:0.14em; text-transform:uppercase; color:var(--muted-fg); }
+h1 { margin:1rem 0 0; font-size:3rem; }
+.tagline { margin:1rem 0 0; font-size:1.5rem; }
+.lede, .meta { color:var(--muted-fg); }
+.lede { margin:1.5rem 0 0; max-width:36rem; }
+.actions { margin-top:2rem; display:flex; flex-direction:column; gap:0.75rem; }
+.quiet { color:var(--fg); text-decoration:underline; text-underline-offset:4px; text-decoration-color:var(--border); height:2.75rem; display:inline-flex; align-items:center; font-size:0.875rem; font-weight:500; }
+.feature, .card-link { border:1px solid var(--border); background:var(--card); border-radius:0.75rem; padding:1rem; text-decoration:none; display:block; }
+.frame { display:flex; aspect-ratio:3/4; align-items:center; justify-content:center; overflow:hidden; border-radius:0.5rem; background:var(--muted); }
+.frame img { max-width:100%; max-height:100%; object-fit:contain; }
+.card-title { display:block; margin-top:0.25rem; font-size:1.875rem; }
+.meta { display:block; margin-top:0.5rem; font-size:0.875rem; }
+.steps { border-top:1px solid var(--border); border-bottom:1px solid var(--border); list-style:none; margin:0; padding:0; display:grid; }
+.steps li { padding:2rem 1rem; }
+.steps h3 { margin:0.75rem 0 0; font-size:1rem; font-weight:500; }
+.steps p { margin:0.5rem 0 0; font-size:0.875rem; color:var(--muted-fg); }
+.num { font-size:1.875rem; margin:0; }
+#wall { padding:3.5rem 0; }
+.wall-head { display:flex; flex-direction:column; gap:1.5rem; }
+h2 { margin:0; font-size:2.25rem; }
+.chips { display:flex; gap:0.5rem; overflow-x:auto; }
+.chip { height:2.75rem; flex:none; border-radius:999px; border:1px solid var(--border); background:var(--card); color:var(--fg); padding:0 1rem; font:500 0.875rem/1 "Libre Franklin",sans-serif; cursor:pointer; }
+.chip[aria-pressed="true"] { background:var(--fg); color:#f6f4ef; border-color:var(--fg); }
+.empty { margin-top:2rem; border:1px solid var(--border); background:var(--card); border-radius:0.75rem; padding:2.5rem 1.5rem; }
+.empty h3 { margin:0; font-size:1.875rem; }
+.samples { margin-top:4rem; }
+.grid { list-style:none; margin:2rem 0 0; padding:0; display:grid; gap:1.5rem; }
+footer { border-top:1px solid var(--border); }
+.foot { padding:2.5rem 0; }
+.foot p { margin:0; max-width:36rem; font-size:0.875rem; color:var(--muted-fg); }
+dialog { border:1px solid var(--border); border-radius:2rem; background:var(--card); color:var(--fg); width:min(32rem,calc(100% - 2rem)); padding:1.5rem; }
+dialog::backdrop { background:rgba(28,27,24,.5); }
+dialog p { color:var(--muted-fg); font-size:0.875rem; }
+@media (min-width:640px) {
+  .actions, .wall-head { flex-direction:row; align-items:end; }
+  .actions { align-items:center; }
+  .wall-head { justify-content:space-between; }
+  .steps { grid-template-columns:repeat(3,1fr); }
+  .steps li + li { border-left:1px solid var(--border); }
+  .grid { grid-template-columns:1fr 1fr; }
+}
+@media (min-width:768px) {
+  .hero { grid-template-columns:7fr 5fr; padding:5rem 0; }
+  h1 { font-size:3.75rem; }
+  .tagline { font-size:1.875rem; }
+}
+@media (min-width:1024px) { .grid { grid-template-columns:1fr 1fr 1fr; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="bar">
+    <a class="display brand" href="#top">Goodrich Group</a>
+    <button type="button" id="open-file">File a sheet</button>
+  </div>
+</header>
+<main id="top">
+  <section class="wrap hero">
+    <div>
+      <p class="kicker">A public gallery</p>
+      <h1 class="display">Goodrich Group</h1>
+      <p class="tagline">Helping good people get rich.</p>
+      <p class="lede">When someone stalls a payment, pays an invoice late, keeps a deposit, or leans on you because they think you will not fight it, the court sheet is the answer that lasts. Photograph it. File it here. The wall is a record that bullying people out of money, including late invoice payments, does not pay.</p>
+      <div class="actions">
+        <button type="button" id="open-file-2">File a sheet</button>
+        <a class="quiet" href="#wall">Look at the wall</a>
+      </div>
+    </div>
+    <a class="feature" href="#wall">
+      <span class="frame"><img alt="Illustrative example of a sheet on the wall" data-b64="assets/invoice.b64"></span>
+      <span class="kicker" style="display:block;margin-top:1rem">Example on the wall</span>
+      <span class="display card-title">Unpaid invoice</span>
+      <span class="meta">Debt ordered paid</span>
+    </a>
+  </section>
+  <ol class="steps wrap" aria-label="From court to the wall">
+    <li><p class="display num">01</p><h3>Win the order</h3><p>Take the dispute to court. Come back with the judgment, the counterclaim that succeeded, or the order that the money is due.</p></li>
+    <li><p class="display num">02</p><h3>Photograph the sheet</h3><p>A clear JPEG of the page is enough. You can also add the emails or WhatsApp screenshots that led to court. Cover names, phone numbers, and addresses first.</p></li>
+    <li><p class="display num">03</p><h3>Put it on the wall</h3><p>File it here. Each sheet is checked before it is hung, so the wall stays a record rather than a place for spam.</p></li>
+  </ol>
+  <section id="wall" class="wrap">
+    <div class="wall-head">
+      <div>
+        <h2 class="display">The wall</h2>
+        <p class="meta">0 sheets filed</p>
+      </div>
+      <div class="chips" role="group" aria-label="Filter the wall">
+        <button class="chip" type="button" data-filter="all" aria-pressed="true">All</button>
+        <button class="chip" type="button" data-filter="invoice">Unpaid invoice</button>
+        <button class="chip" type="button" data-filter="withheld">Withheld payment</button>
+        <button class="chip" type="button" data-filter="deposit">Kept deposit</button>
+        <button class="chip" type="button" data-filter="wages">Wages</button>
+        <button class="chip" type="button" data-filter="contract">Broken contract</button>
+        <button class="chip" type="button" data-filter="other">Other order</button>
+      </div>
+    </div>
+    <div class="empty">
+      <h3 class="display">The wall is clear.</h3>
+      <p class="meta" style="max-width:36rem">When someone files a JPEG of an order they won, it appears here. The sheets below are examples, not real cases.</p>
+    </div>
+    <div class="samples">
+      <h2 class="display" style="font-size:1.875rem">Illustrative sheets</h2>
+      <p class="meta" style="max-width:36rem">Set dressing, so you can see how a page sits. Not real orders. Not real parties.</p>
+      <ul class="grid" id="samples">
+        <li class="card" data-cat="invoice"><a class="card-link" href="#wall"><span class="frame"><img alt="Illustrative example of a sheet titled Unpaid invoice" data-b64="assets/invoice.b64"></span><span class="kicker">Example on the wall</span><span class="display card-title">Unpaid invoice</span><span class="meta">Debt ordered paid</span></a></li>
+        <li class="card" data-cat="withheld"><a class="card-link" href="#wall"><span class="frame"><img alt="Illustrative example of a sheet titled Payment withheld" data-b64="assets/withheld.b64"></span><span class="kicker">Example on the wall</span><span class="display card-title">Payment withheld</span><span class="meta">Judgment entered</span></a></li>
+        <li class="card" data-cat="deposit"><a class="card-link" href="#wall"><span class="frame"><img alt="Illustrative example of a sheet titled Deposit retained" data-b64="assets/deposit.b64"></span><span class="kicker">Example on the wall</span><span class="display card-title">Deposit retained</span><span class="meta">Counterclaim succeeded</span></a></li>
+        <li class="card" data-cat="wages"><a class="card-link" href="#wall"><span class="frame"><img alt="Illustrative example of a sheet titled Wages ordered" data-b64="assets/wages.b64"></span><span class="kicker">Example on the wall</span><span class="display card-title">Wages ordered</span><span class="meta">Judgment entered</span></a></li>
+      </ul>
+      <p class="meta" id="none" hidden>No example in this category. A filed sheet would still appear above.</p>
+    </div>
+  </section>
+</main>
+<footer>
+  <div class="wrap foot">
+    <p>Goodrich Group is a public viewing gallery, not a law firm, not a court, and not legal advice. It does not record who files a sheet, and it cannot tell anyone who did. Only file a document you have the right to publish.</p>
+  </div>
+</footer>
+<dialog id="file-dialog">
+  <h2 class="display">File a sheet</h2>
+  <p>This address shows the gallery. A photograph sent from this page is not saved, because GitHub only serves the page. The sheets below are examples, not real cases.</p>
+  <form method="dialog" style="margin-top:1.5rem"><button type="submit">Close</button></form>
+</dialog>
+<script>
+const dialog = document.getElementById("file-dialog");
+document.getElementById("open-file").onclick = () => dialog.showModal();
+document.getElementById("open-file-2").onclick = () => dialog.showModal();
+const cards = [...document.querySelectorAll("#samples .card")];
+document.querySelector(".chips").onclick = (event) => {
+  const button = event.target.closest("[data-filter]");
+  if (!button) return;
+  const filter = button.dataset.filter;
+  for (const chip of document.querySelectorAll(".chip")) chip.setAttribute("aria-pressed", String(chip === button));
+  let shown = 0;
+  for (const card of cards) {
+    const on = filter === "all" || card.dataset.cat === filter;
+    card.hidden = !on;
+    if (on) shown += 1;
+  }
+  document.getElementById("none").hidden = shown !== 0;
+};
+for (const img of document.querySelectorAll("[data-b64]")) {
+  fetch(img.dataset.b64).then((response) => response.text()).then((text) => {
+    img.src = "data:image/jpeg;base64," + text.trim();
+  });
+}
+</script>
+</body>
+</html>
