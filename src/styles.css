@@ -1,0 +1,167 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Libre Franklin", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Newsreader", "Iowan Old Style", Georgia, serif;
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+  --color-background: #f3f1ec;
+  --color-foreground: #1c1b18;
+  --color-card: #faf9f6;
+  --color-card-foreground: #1c1b18;
+  --color-muted: #e7e2d8;
+  --color-muted-foreground: #5c574e;
+  --color-border: #d9d3c7;
+  --color-input: #d9d3c7;
+  --color-primary: #1c1b18;
+  --color-primary-foreground: #f6f4ef;
+  --color-secondary: #e7e2d8;
+  --color-secondary-foreground: #1c1b18;
+  --color-accent: #2c3d4f;
+  --color-accent-foreground: #f6f4ef;
+  --color-ring: #2c3d4f;
+  --color-destructive: #8c3b32;
+
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+
+  --shadow-sheet: 0 18px 40px color-mix(in oklab, var(--color-foreground) 8%, transparent);
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.5;
+    text-wrap: pretty;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  ::selection {
+    background: var(--color-accent);
+    color: var(--color-accent-foreground);
+  }
+}
+
+.display {
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+
+.tagline {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.25;
+}
+
+.panel,
+.panel-wide {
+  width: min(32rem, calc(100% - 2rem));
+  max-height: min(92dvh, 52rem);
+  overflow-y: auto;
+  border: 1px solid var(--color-border);
+  border-radius: 2rem;
+  background: var(--color-card);
+  box-shadow: var(--shadow-sheet);
+  animation: panel-in 250ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.panel-wide {
+  width: min(52rem, calc(100% - 2rem));
+}
+
+.overlay-in {
+  animation: overlay-in 250ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.sheet-view {
+  display: block;
+  width: 100%;
+  max-height: 70dvh;
+  object-fit: contain;
+  background: var(--color-muted);
+  border-radius: var(--radius-sm);
+}
+
+.rise > * {
+  animation: rise-in 500ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.rise > *:nth-child(2) {
+  animation-delay: 40ms;
+}
+.rise > *:nth-child(3) {
+  animation-delay: 80ms;
+}
+.rise > *:nth-child(4) {
+  animation-delay: 120ms;
+}
+.rise > *:nth-child(5) {
+  animation-delay: 160ms;
+}
+
+@keyframes overlay-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes panel-in {
+  from {
+    opacity: 0;
+    scale: 0.98;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel,
+  .panel-wide,
+  .overlay-in,
+  .rise > * {
+    animation: none;
+  }
+}
