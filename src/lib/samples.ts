@@ -1,7 +1,7 @@
-import deposit from "@/assets/exhibits/deposit.jpg";
-import invoice from "@/assets/exhibits/invoice.jpg";
-import wages from "@/assets/exhibits/wages.jpg";
-import withheld from "@/assets/exhibits/withheld.jpg";
+import deposit from "@/assets/exhibits/deposit.svg";
+import invoice from "@/assets/exhibits/invoice.svg";
+import wages from "@/assets/exhibits/wages.svg";
+import withheld from "@/assets/exhibits/withheld.svg";
 import type { Exhibit } from "@/lib/exhibits";
 
 export const SAMPLES: Exhibit[] = [
