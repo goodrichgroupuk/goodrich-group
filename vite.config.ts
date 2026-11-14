@@ -175,6 +175,10 @@ export default defineConfig(({ command, isPreview }) => ({
             // manifest + head-tag middleware). Nitro v3 defaults serverDir to
             // false, so removing this silently unwires /?install=1 on deploys.
             serverDir: "./server",
+            // The root index.html is the static GitHub Pages site. Without this,
+            // Nitro adopts it as an SPA renderer template and serves it for every
+            // route, hiding the TanStack Start app (filing + review never load).
+            renderer: false,
           }),
         ]
       : []),
