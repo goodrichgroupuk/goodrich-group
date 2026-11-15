@@ -4,6 +4,7 @@ import { ExhibitCard } from "@/components/exhibit-card";
 import { FileDialog } from "@/components/file-dialog";
 import { RedactDialog } from "@/components/redact-dialog";
 import { RemoveDialog } from "@/components/remove-dialog";
+import { SiteHeader } from "@/components/site-header";
 import { Button } from "@/components/ui/button";
 import { AppErrorComponent } from "@/lib/error-component";
 import { CATEGORIES, categoryLabel, resultLabel } from "@/lib/exhibits";
@@ -62,21 +63,18 @@ function Home() {
 
   return (
     <div id="top" className="min-h-screen">
-      <header className="sticky top-0 z-30 border-b border-border bg-background">
-        <div className="mx-auto flex min-h-16 max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-3">
-          <a href="#top" className="display text-xl text-foreground">
-            Goodrich Group
-          </a>
-          <div className="flex flex-wrap items-center gap-2">
+      <SiteHeader
+        actions={
+          <>
             <Button variant="secondary" className="whitespace-nowrap" onClick={() => setRedactOpen(true)}>
               Redact a file
             </Button>
             <Button className="whitespace-nowrap" onClick={() => setFileOpen(true)}>
               File a sheet
             </Button>
-          </div>
-        </div>
-      </header>
+          </>
+        }
+      />
 
       <main>
         <section className="mx-auto grid max-w-6xl items-end gap-10 px-4 py-12 md:grid-cols-12 md:py-20">

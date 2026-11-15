@@ -1,18 +1,20 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useState } from "react";
+import { SiteHeader } from "@/components/site-header";
 import { Button } from "@/components/ui/button";
-import { FieldLabel, TextField } from "@/components/ui/fields";
+import { FieldLabel, SelectField, TextField } from "@/components/ui/fields";
 import { AppErrorComponent } from "@/lib/error-component";
 import {
-  categoryLabel,
+  CATEGORIES,
   errorText,
   formatFiled,
   resultLabel,
   threadKindLabel,
+  type CategoryId,
   type ReviewCase,
 } from "@/lib/exhibits";
-import { decideExhibit, listPending } from "@/lib/exhibits.functions";
+import { decideExhibit, listPending, relabelExhibit } from "@/lib/exhibits.functions";
 
 const KEY_STORAGE = "goodrich-review-key";
 
@@ -27,6 +29,7 @@ export const Route = createFileRoute("/review")({
 function ReviewPage() {
   const loadQueue = useServerFn(listPending);
   const decide = useServerFn(decideExhibit);
+  const relabel = useServerFn(relabelExhibit);
   const [key, setKey] = useState("");
   const [unlocked, setUnlocked] = useState(false);
   const [items, setItems] = useState<ReviewCase[]>([]);
@@ -58,6 +61,21 @@ function ReviewPage() {
     }
   }
 
+  async function onRelabel(id: string, category: CategoryId) {
+    setBusy(true);
+    setError("");
+    try {
+      await relabel({ data: { id, category, key } });
+      setItems((current) =>
+        current.map((item) => (item.id === id ? { ...item, category } : item)),
+      );
+    } catch (caught) {
+      setError(errorText(caught, "Could not change that label."));
+    } finally {
+      setBusy(false);
+    }
+  }
+
   async function onDecide(id: string, action: "approve" | "decline") {
     setBusy(true);
     setError("");
@@ -83,18 +101,15 @@ function ReviewPage() {
 
   return (
     <div className="min-h-screen">
-      <header className="border-b border-border bg-background">
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4">
-          <Link to="/" className="display text-xl text-foreground">
-            Goodrich Group
-          </Link>
-          {unlocked ? (
+      <SiteHeader
+        actions={
+          unlocked ? (
             <Button variant="secondary" onClick={lock}>
               Lock the queue
             </Button>
-          ) : null}
-        </div>
-      </header>
+          ) : null
+        }
+      />
       <main className="mx-auto max-w-6xl px-4 py-12">
         <p className="text-xs font-medium tracking-widest text-muted-foreground uppercase">
           Private
@@ -133,9 +148,24 @@ function ReviewPage() {
                         className="max-h-full max-w-full object-contain"
                       />
                     </div>
-                    <p className="mt-4 text-xs font-medium tracking-widest text-muted-foreground uppercase">
-                      {categoryLabel(item.category)}
-                    </p>
+                    <div className="mt-4">
+                      <FieldLabel htmlFor={`label-${item.id}`}>Label</FieldLabel>
+                      <SelectField
+                        id={`label-${item.id}`}
+                        value={item.category}
+                        disabled={busy}
+                        onChange={(event) => void onRelabel(item.id, event.target.value as CategoryId)}
+                      >
+                        {CATEGORIES.map((choice) => (
+                          <option key={choice.id} value={choice.id}>
+                            {choice.label}
+                          </option>
+                        ))}
+                      </SelectField>
+                      <p className="mt-2 text-sm text-muted-foreground">
+                        Shown on the wall once the sheet is approved. You can change it before you approve.
+                      </p>
+                    </div>
                     <h2 className="display mt-1 text-2xl">{item.title}</h2>
                     <p className="mt-2 text-sm text-muted-foreground">{resultLabel(item.result)}</p>
                     <p className="mt-2 text-xs text-muted-foreground">

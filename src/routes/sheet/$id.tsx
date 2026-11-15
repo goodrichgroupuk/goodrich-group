@@ -6,7 +6,6 @@ import { FieldLabel, SelectField, TextField } from "@/components/ui/fields";
 import { AppErrorComponent } from "@/lib/error-component";
 import {
   THREAD_KINDS,
-  categoryLabel,
   errorText,
   formatFiled,
   resultLabel,
@@ -17,6 +16,8 @@ import {
 import { addThread, getExhibit } from "@/lib/exhibits.functions";
 import { prepareSheet, SHEET_ACCEPT } from "@/lib/prepare-sheet";
 import { NameCover } from "@/components/name-cover";
+import { CategoryBadge } from "@/components/category-badge";
+import { SiteHeader } from "@/components/site-header";
 import { SAMPLES } from "@/lib/samples";
 
 export const Route = createFileRoute("/sheet/$id")({
@@ -43,24 +44,15 @@ function SheetPage() {
   if (!page) return <MissingSheet />;
   return (
     <div className="min-h-screen">
-      <header className="border-b border-border bg-background">
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4">
-          <Link to="/" className="display text-xl text-foreground">
-            Goodrich Group
-          </Link>
-          <Link
-            to="/"
-            hash="wall"
-            className="text-sm font-medium text-foreground underline decoration-border underline-offset-4"
-          >
-            The wall
-          </Link>
-        </div>
-      </header>
+      <SiteHeader />
       <main className="mx-auto max-w-3xl px-4 py-12">
-        <p className="text-xs font-medium tracking-widest text-muted-foreground uppercase">
-          {page.illustrative ? "Example" : categoryLabel(page.category)}
-        </p>
+        {page.illustrative ? (
+          <p className="text-xs font-medium tracking-widest text-muted-foreground uppercase">
+            Example
+          </p>
+        ) : (
+          <CategoryBadge id={page.category} />
+        )}
         <h1 className="display mt-4 text-5xl">{page.title}</h1>
         <p className="mt-4 text-base text-muted-foreground">
           {resultLabel(page.result)}

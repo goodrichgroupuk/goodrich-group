@@ -1,10 +1,6 @@
 import { Link } from "@tanstack/react-router";
-import {
-  categoryLabel,
-  formatFiled,
-  resultLabel,
-  type Exhibit,
-} from "@/lib/exhibits";
+import { CategoryBadge } from "@/components/category-badge";
+import { formatFiled, resultLabel, type Exhibit } from "@/lib/exhibits";
 
 export function ExhibitCard({ item }: { item: Exhibit }) {
   const filed = item.illustrative ? "Example sheet" : formatFiled(item.createdAt);
@@ -26,9 +22,7 @@ export function ExhibitCard({ item }: { item: Exhibit }) {
             className="max-h-full max-w-full object-contain"
           />
         </span>
-        <span className="mt-4 text-xs font-medium tracking-widest text-muted-foreground uppercase">
-          {categoryLabel(item.category)}
-        </span>
+        <CategoryBadge id={item.category} className="mt-4" />
         <span className="display mt-1 text-2xl text-foreground">{item.title}</span>
         <span className="mt-2 text-sm text-muted-foreground">{resultLabel(item.result)}</span>
         <span className="mt-3 text-xs text-muted-foreground">{filed}</span>

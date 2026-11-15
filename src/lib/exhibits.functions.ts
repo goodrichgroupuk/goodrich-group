@@ -346,6 +346,37 @@ export const decideExhibit = createServerFn({ method: "POST" })
     return { ok: true as const };
   });
 
+export const relabelExhibit = createServerFn({ method: "POST" })
+  .validator((input: { id: string; category: string; key: string }) => {
+    const id = String(input?.id ?? "")
+      .trim()
+      .toLowerCase();
+    const category = String(input?.category ?? "");
+    const key = String(input?.key ?? "");
+    if (!/^gr-[abcdefghjkmnpqrstuvwxyz23456789]{8}$/.test(id)) {
+      throw new Error("That sheet could not be found.");
+    }
+    if (!isCategory(category)) throw new Error("Choose a label.");
+    return { id, category, key };
+  })
+  .handler(async ({ data }) => {
+    await assertReviewKey(data.key);
+    const { getSql } = await import("@/lib/db");
+    const sql = await getSql();
+    const rows = await sql<{ id: string }>`
+      update exhibits
+      set category = ${data.category}
+      where id = ${data.id}
+        and (
+          status = 'pending'
+          or id in (select exhibit_id from attachments where status = 'pending')
+        )
+      returning id
+    `;
+    if (!rows.length) throw new Error("That sheet is no longer waiting.");
+    return { ok: true as const };
+  });
+
 export const getExhibit = createServerFn({ method: "GET" })
   .validator((input: { id: string }) => {
     const id = String(input?.id ?? "")

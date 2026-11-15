@@ -1,5 +1,6 @@
 export const CATEGORIES = [
   { id: "invoice", label: "Unpaid invoice" },
+  { id: "late-invoice", label: "Late-paid invoice" },
   { id: "withheld", label: "Withheld payment" },
   { id: "deposit", label: "Kept deposit" },
   { id: "wages", label: "Wages" },
