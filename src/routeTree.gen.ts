@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ReviewRouteImport } from './routes/review'
+import { Route as WallRouteImport } from './routes/wall'
 import { Route as GuidesIndexRouteImport } from './routes/guides/index'
 import { Route as GuidesSlugRouteImport } from './routes/guides/$slug'
 import { Route as SheetIdRouteImport } from './routes/sheet/$id'
@@ -23,6 +24,11 @@ const IndexRoute = IndexRouteImport.update({
 const ReviewRoute = ReviewRouteImport.update({
   id: '/review',
   path: '/review',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WallRoute = WallRouteImport.update({
+  id: '/wall',
+  path: '/wall',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GuidesIndexRoute = GuidesIndexRouteImport.update({
@@ -44,6 +50,7 @@ const SheetIdRoute = SheetIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/review': typeof ReviewRoute
+  '/wall': typeof WallRoute
   '/guides/$slug': typeof GuidesSlugRoute
   '/sheet/$id': typeof SheetIdRoute
   '/guides/': typeof GuidesIndexRoute
@@ -51,6 +58,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/review': typeof ReviewRoute
+  '/wall': typeof WallRoute
   '/guides/$slug': typeof GuidesSlugRoute
   '/sheet/$id': typeof SheetIdRoute
   '/guides': typeof GuidesIndexRoute
@@ -59,21 +67,31 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/review': typeof ReviewRoute
+  '/wall': typeof WallRoute
   '/guides/$slug': typeof GuidesSlugRoute
   '/sheet/$id': typeof SheetIdRoute
   '/guides/': typeof GuidesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/review' | '/guides/$slug' | '/sheet/$id' | '/guides/'
+  fullPaths:
+    '/' | '/review' | '/wall' | '/guides/$slug' | '/sheet/$id' | '/guides/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/review' | '/guides/$slug' | '/sheet/$id' | '/guides'
-  id: '__root__' | '/' | '/review' | '/guides/$slug' | '/sheet/$id' | '/guides/'
+  to: '/' | '/review' | '/wall' | '/guides/$slug' | '/sheet/$id' | '/guides'
+  id:
+    | '__root__'
+    | '/'
+    | '/review'
+    | '/wall'
+    | '/guides/$slug'
+    | '/sheet/$id'
+    | '/guides/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ReviewRoute: typeof ReviewRoute
+  WallRoute: typeof WallRoute
   GuidesSlugRoute: typeof GuidesSlugRoute
   SheetIdRoute: typeof SheetIdRoute
   GuidesIndexRoute: typeof GuidesIndexRoute
@@ -93,6 +111,13 @@ declare module '@tanstack/react-router' {
       path: '/review'
       fullPath: '/review'
       preLoaderRoute: typeof ReviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/wall': {
+      id: '/wall'
+      path: '/wall'
+      fullPath: '/wall'
+      preLoaderRoute: typeof WallRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/guides/': {
@@ -122,6 +147,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ReviewRoute: ReviewRoute,
+  WallRoute: WallRoute,
   GuidesSlugRoute: GuidesSlugRoute,
   SheetIdRoute: SheetIdRoute,
   GuidesIndexRoute: GuidesIndexRoute,

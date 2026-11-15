@@ -10,6 +10,12 @@ export function SiteHeader({ actions }: { actions?: ReactNode }) {
             Goodrich Group
           </Link>
           <Link
+            to="/wall"
+            className="text-sm font-medium text-foreground underline decoration-border underline-offset-4"
+          >
+            Look at the wall
+          </Link>
+          <Link
             to="/guides"
             className="text-sm font-medium text-foreground underline decoration-border underline-offset-4"
           >
