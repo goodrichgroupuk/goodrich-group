@@ -5,7 +5,7 @@ const JPEG_PREFIX = "data:image/jpeg;base64,";
 const ID_ALPHABET = "abcdefghjkmnpqrstuvwxyz23456789";
 const CODE_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 const WALL_LIMIT = 36;
-const THREAD_CAP = 6;
+const THREAD_CAP = 24;
 
 function token(length: number, alphabet: string) {
   const bytes = new Uint8Array(length);
